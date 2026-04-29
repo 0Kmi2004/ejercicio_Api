@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ProveedorService } from '../services/proveedor-service';
+
 
 @Component({
   selector: 'app-tab2',
@@ -8,6 +10,26 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  constructor() {}
+  usuarios: any;
 
-}
+  constructor(
+    public proveedorService: ProveedorService
+
+  ) {}
+
+  ngOnInit() {
+    this.ionViewDidLoad()
+    }
+
+    ionViewDidLoad(){
+      this.proveedorService.obtenerDatos()
+      .subscribe({
+      next: (data) => {
+      this.usuarios = data;
+      console.log(this.usuarios);
+      },
+      error: (error)=> {
+      console.log(error);
+      }
+      })
+    }}
