@@ -51,7 +51,7 @@ export class TabsPage implements OnInit {
     }
 
    obtenerUsuarios() {
-    this.http.get<any[]>('https://jsonplaceholder.typicode.com/uses')
+    this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
       .subscribe({
         next: (data) => {
           this.usuarios = data.map(u => ({

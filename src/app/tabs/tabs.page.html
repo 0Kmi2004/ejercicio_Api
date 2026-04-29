@@ -6,11 +6,19 @@
  </ion-item>
  </ion-list>
 
+
+
 <ion-searchbar
   [(ngModel)]="textoBusqueda"
   (ionInput)="filtrarUsuarios()"
   placeholder="Buscar por nombre o email">
 </ion-searchbar>
+
+ <ion-item lines="none">
+  <ion-label>
+    Total de usuarios: {{ usuariosFiltrados.length }}
+  </ion-label>
+</ion-item>
 
 <ion-text color="danger" *ngIf="error">
   <p class="ion-padding">
