@@ -3,6 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
 interface Usuario {
+  id: number;
   nombre: string;
   email: string;
   telefono: string;
@@ -21,6 +22,7 @@ export class TabsPage implements OnInit {
 
   usuarios: Usuario[] = [
     {
+      id: 1,
       nombre: 'Juan Perez',
       email: 'juan@gmail.com',
       telefono: '11-2345-6789',
@@ -29,6 +31,7 @@ export class TabsPage implements OnInit {
       web: 'www.techsolutions.com'
     },
     {
+      id: 2,
       nombre: 'Maria Lopez',
       email: 'maria@gmail.com',
       telefono: '11-9876-5432',
@@ -55,6 +58,7 @@ export class TabsPage implements OnInit {
       .subscribe({
         next: (data) => {
           this.usuarios = data.map(u => ({
+            id: u.id,
             nombre: u.name,
             email: u.email,
             telefono: u.phone,
@@ -81,10 +85,16 @@ export class TabsPage implements OnInit {
     );
   }
 
+  ocultarMayoresA5() {
+    this.usuariosFiltrados = this.usuariosFiltrados.filter(usuario => usuario.id <= 5);
+  }
+
   async verDetalle(usuario: Usuario) {
     const alert = await this.alertController.create({
       header: usuario.nombre,
       message: `
+        Id: ${usuario.id}.
+
         Teléfono: ${usuario.telefono}.
 
         Ciudad: ${usuario.ciudad}.
@@ -95,6 +105,8 @@ export class TabsPage implements OnInit {
       `,
       buttons: ['Cerrar']
     });
+
+    
 
     await alert.present();
 

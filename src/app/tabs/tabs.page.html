@@ -39,6 +39,9 @@
 
   </ion-item>
 </ion-list>
+<ion-button expand="block" (click)="ocultarMayoresA5()">
+  Mostrar solo ID ≤ 5
+</ion-button>
 <ion-text color="danger" *ngIf="error">
   <p class="ion-padding">{{ error }}</p>
 </ion-text>
