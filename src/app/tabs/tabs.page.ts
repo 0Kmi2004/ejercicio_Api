@@ -2,64 +2,103 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
+interface Usuario {
+  nombre: string;
+  email: string;
+  telefono: string;
+  ciudad: string;
+  empresa: string;
+  web: string;
+}
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  standalone: false
+  standalone: false,
 })
 export class TabsPage implements OnInit {
 
-  usuarios: any[] = [];
-  usuariosFiltrados: any[] = [];
+  usuarios: Usuario[] = [
+    {
+      nombre: 'Juan Perez',
+      email: 'juan@gmail.com',
+      telefono: '11-2345-6789',
+      ciudad: 'Buenos Aires',
+      empresa: 'Tech Solutions',
+      web: 'www.techsolutions.com'
+    },
+    {
+      nombre: 'Maria Lopez',
+      email: 'maria@gmail.com',
+      telefono: '11-9876-5432',
+      ciudad: 'Córdoba',
+      empresa: 'DevSoft',
+      web: 'www.devsoft.com'
+    }
+  ];
+
+  usuariosFiltrados = [...this.usuarios];
   textoBusqueda: string = '';
   error: string = '';
-  
 
   constructor(
-    private http: HttpClient,
-    private alertController: AlertController
-  ) {}
+    private alertController: AlertController,
+    private http: HttpClient,) {}
 
-  ngOnInit() {
-    this.obtenerUsuarios();
-  }
+    ngOnInit() {
+      this.obtenerUsuarios();
+    }
 
-  obtenerUsuarios() {
-    this.http.get<any[]>('https://jsonplaceholder.typicode.com/users')
+   obtenerUsuarios() {
+    this.http.get<any[]>('https://jsonplaceholder.typicode.com/uses')
       .subscribe({
         next: (data) => {
-          this.usuarios = data;
-          this.usuariosFiltrados = data;
+          this.usuarios = data.map(u => ({
+            nombre: u.name,
+            email: u.email,
+            telefono: u.phone,
+            ciudad: u.address.city,
+            empresa: u.company.name,
+            web: u.website
+          }));
+
+          this.usuariosFiltrados = this.usuarios;
+          this.error = '';
         },
         error: (err) => {
           this.error = 'Error al cargar usuarios';
           console.error(err);
         }
-      });
-  }
+      });}
 
   filtrarUsuarios() {
     const texto = this.textoBusqueda.toLowerCase();
 
     this.usuariosFiltrados = this.usuarios.filter(usuario =>
-      usuario.name.toLowerCase().includes(texto) ||
+      usuario.nombre.toLowerCase().includes(texto) ||
       usuario.email.toLowerCase().includes(texto)
     );
   }
 
-  async verDetalle(usuario: any) {
+  async verDetalle(usuario: Usuario) {
     const alert = await this.alertController.create({
-      header: usuario.name,
+      header: usuario.nombre,
       message: `
-        <strong>Teléfono:</strong> ${usuario.phone}<br>
-        <strong>Ciudad:</strong> ${usuario.address.city}<br>
-        <strong>Empresa:</strong> ${usuario.company.name}<br>
-        <strong>Web:</strong> ${usuario.website}
+        Teléfono: ${usuario.telefono}.
+
+        Ciudad: ${usuario.ciudad}.
+
+        Empresa: ${usuario.empresa}.
+
+        Sitio web: ${usuario.web}.
       `,
-      buttons: ['OK']
+      buttons: ['Cerrar']
     });
 
     await alert.present();
+
+    
   }
+
 }
