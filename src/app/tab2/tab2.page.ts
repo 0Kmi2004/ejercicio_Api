@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { ProveedorService } from '../services/proveedor-service';
 
 
@@ -6,7 +7,8 @@ import { ProveedorService } from '../services/proveedor-service';
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
-  standalone: false,
+  standalone: false
+
 })
 export class Tab2Page {
 
